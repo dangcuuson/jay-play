@@ -1,0 +1,29 @@
+{
+  "name": "jay-play",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "graphql": "^0.9.1",
+    "graphql-server-express": "^0.6.0",
+    "graphql-tools": "^0.10.0"
+  },
+  "devDependencies": {
+    "jest": "18.1.0",
+    "typescript": "2.1.6"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dangcuuson/jay-play.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dangcuuson/jay-play/issues"
+  },
+  "homepage": "https://github.com/dangcuuson/jay-play#readme"
+}

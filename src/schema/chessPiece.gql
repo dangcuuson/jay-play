@@ -1,0 +1,13 @@
+enum ChessName {
+    
+}
+
+enum ChessSide {
+
+}
+
+type ChessPiece {
+    name: ChessName!
+    side: ChessSide!
+    
+}
