@@ -8,10 +8,10 @@ const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
   inject: "body"
 });
 
-let clientAppDir = path.resolve("src", "client");
+const APP_DIR = path.resolve("src");
 
 module.exports = {
-  entry: path.resolve(clientAppDir, "main.js"),
+  entry: path.resolve(APP_DIR, "main.js"),
   output: {
     path: path.resolve("public"),
     filename: "bundle.js"
@@ -27,7 +27,7 @@ module.exports = {
   },
   resolve: {
     alias: {
-      components: path.resolve(clientAppDir, "components")
+      components: path.resolve(APP_DIR, "components")
     }
   },
   plugins: [
