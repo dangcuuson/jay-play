@@ -27,7 +27,8 @@ module.exports = {
   },
   resolve: {
     alias: {
-      components: path.resolve(APP_DIR, "components")
+      components: path.resolve(APP_DIR, "components"),
+      root: APP_DIR
     }
   },
   plugins: [
