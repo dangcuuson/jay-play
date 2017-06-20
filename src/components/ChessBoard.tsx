@@ -1,9 +1,10 @@
 import React = require('react');
+import './ChessBoard.css';
 
 export class ChessBoard extends React.Component<{}, {}> {
     render() {
         return (
-            <div>ChessBoard Here</div>
+            <div className="chessboard">ChessBoard Here</div>
         );
     }
 }

@@ -25,16 +25,17 @@ module.exports = {
   },
   devtool: "source-map",
   module: {
-    rules: [
-      {
-        test: /\.tsx?$/,
-        loader: "awesome-typescript-loader"
-      }, {
-        enforce: "pre",
-        test: /\.js?$/,
-        loader: "source-map-loader"
-      }
-    ]
+    rules: [{
+      test: /\.tsx?$/,
+      loader: "awesome-typescript-loader"
+    }, {
+      enforce: "pre",
+      test: /\.js?$/,
+      loader: "source-map-loader"
+    }, {
+      test: /\.css$/,
+      use: ['style-loader', 'css-loader']
+    }],
   },
   resolve: {
     extensions: [
