@@ -1,12 +1,5 @@
 const path = require("path");
 const webpack = require("webpack");
-const tsconfig = require('./tsconfig.json');
-
-const baseUrl = path.resolve(tsconfig.compilerOptions.baseUrl);
-const webpackAlias = {};
-for (let key in tsconfig.compilerOptions.paths) {
-  webpackAlias[key] = path.resolve(baseUrl, tsconfig.compilerOptions.paths[key][0]);
-}
 
 const SRC_DIR = path.resolve('src');
 
@@ -44,7 +37,10 @@ module.exports = {
     extensions: [
       ".ts", ".tsx", ".js", ".json"
     ],
-    alias: webpackAlias
+    alias: {
+      components: path.resolve(SRC_DIR, 'components'),
+      assets: path.resolve(SRC_DIR, 'assets')
+    }
   },
   plugins: [
     HtmlWebpackPluginConfig,

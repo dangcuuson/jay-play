@@ -3,8 +3,7 @@
         "outDir": "build",
         "baseUrl": "src",
         "paths": {
-            "components": ["components"],
-            "assets": ["assets"]
+            "*": ["*"]
         },
         "sourceMap": true,
         "noImplicitAny": true,
