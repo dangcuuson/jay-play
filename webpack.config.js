@@ -1,5 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const SRC_DIR = path.resolve('src');
 
@@ -38,12 +39,12 @@ module.exports = {
       use: ['style-loader', 'css-loader']
     }, {
       test: /\.svg$/,
-      loader: 'svg-inline-loader'
+      loader: 'svg-react-loader'
     }],
   },
   resolve: {
     extensions: [
-      ".ts", ".tsx", ".js", ".json"
+      ".ts", ".tsx", ".js", ".json", "svg"
     ],
     alias: {
       components: path.resolve(SRC_DIR, 'components'),
@@ -54,6 +55,7 @@ module.exports = {
     HtmlWebpackPluginConfig,
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin()
+    new webpack.NoEmitOnErrorsPlugin(),
+    new CopyWebpackPlugin([{ from: 'src/assets/images' }])
   ]
 };

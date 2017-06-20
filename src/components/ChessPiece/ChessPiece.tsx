@@ -6,7 +6,7 @@ type ChessPieceProps = {
 };
 
 type ChessPieceSVGs = {
-    [N in ChessPieceProps['name']]: {[S in ChessPieceProps['side']]: string }
+    [N in ChessPieceProps['name']]: {[S in ChessPieceProps['side']]: React.StatelessComponent<any> }
 };
 
 const LoadSVGs = (): ChessPieceSVGs => {
@@ -29,6 +29,7 @@ const SVGs = LoadSVGs();
 export class ChessPiece extends React.Component<ChessPieceProps, {}> {
     render() {
         const { name, side } = this.props;
-        return <span dangerouslySetInnerHTML={{ __html: SVGs[name][side] }} />;
+        const Piece = SVGs[name][side];
+        return <Piece style={{width: '50px'}}/>;
     }
 }
