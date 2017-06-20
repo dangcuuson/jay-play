@@ -1,10 +1,10 @@
 import React = require('react');
-import { ChessBoard } from 'components/ChessBoard';
+import { ChessPiece } from 'components';
 
 class App extends React.Component<{}, {}> {
   render() {
     return (
-      <ChessBoard/>
+      <ChessPiece name={'BISHOP'} side={'BLACK'}/>
     );
   }
 }
