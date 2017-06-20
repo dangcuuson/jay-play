@@ -1,11 +1,9 @@
 import React = require('react');
-import { abc } from 'components/testComponent';
+import { ChessBoard } from 'components/ChessBoard';
 class App extends React.Component<{}, {}> {
   render() {
     return (
-      <div>
-        {abc}
-      </div>
+      <ChessBoard/>
     );
   }
 }
