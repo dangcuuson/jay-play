@@ -22,6 +22,14 @@ module.exports = {
       test: /\.tsx?$/,
       loader: "awesome-typescript-loader"
     }, {
+      test: /\.tsx?$/,
+      enforce: 'pre',
+      loader: 'tslint-loader',
+      options: {
+        configFile: 'tslint.json',
+        failOnHint: false
+      }
+    }, {
       enforce: "pre",
       test: /\.js?$/,
       loader: "source-map-loader"
