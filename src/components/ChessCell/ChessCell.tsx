@@ -7,6 +7,6 @@ type ChessCellProps = {
 
 export class ChellCell extends React.Component<{}, {}> {
     render() {
-        return <div/>
+        return <div/>;
     }
 }

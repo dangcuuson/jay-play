@@ -17,19 +17,18 @@ const LoadSVGs = (): ChessPieceSVGs => {
     for (let name of ChessPieceNames) {
         SVGs[name] = {} as any;
         for (let side of ChessPieceSides) {
-            SVGs[name][side] = require(`assets/images/${name}_${side}.svg`);;
+            SVGs[name][side] = require(`assets/images/${name}_${side}.svg`);
         }
     }
 
     return SVGs as ChessPieceSVGs;
 };
 
-
 const SVGs = LoadSVGs();
 
 export class ChessPiece extends React.Component<ChessPieceProps, {}> {
     render() {
-        const {name, side} = this.props;
-        return <span dangerouslySetInnerHTML={{__html: SVGs[name][side]}}/>
+        const { name, side } = this.props;
+        return <span dangerouslySetInnerHTML={{ __html: SVGs[name][side] }} />;
     }
 }
