@@ -48,7 +48,8 @@ module.exports = {
     ],
     alias: {
       components: path.resolve(SRC_DIR, 'components'),
-      assets: path.resolve(SRC_DIR, 'assets')
+      assets: path.resolve(SRC_DIR, 'assets'),
+      logic: path.resolve(SRC_DIR, 'logic')
     }
   },
   plugins: [
