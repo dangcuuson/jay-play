@@ -12,8 +12,8 @@ export type ChessPiece = {
 };
 
 export type CellPosition = {
-    row: '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8';
-    col: 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H';
+    row: number; // 0-7
+    col: number; // 0-7
 };
 
 /**
@@ -33,28 +33,26 @@ export const getChessPieceInitPositions = (): PieceWithPosition[] => {
     let allPieces: PieceWithPosition[] = [];
 
     // init PAWNS
-    const allRows: CellPosition['row'][] = ['1', '2', '3', '4', '5', '6', '7', '8'];
-    const allCols: CellPosition['col'][] = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
-    for (let col of allCols) {
+    for (let col = 0; col < 8; col++) {
         allPieces.push({
             piece: { name: 'PAWN', side: 'WHITE' },
-            position: { col, row: '2' }
+            position: { col, row: 1 }
         });
 
         allPieces.push({
             piece: { name: 'PAWN', side: 'BLACK' },
-            position: { col, row: '7' }
+            position: { col, row: 6 }
         });
     }
 
     // init the rest (ROOK, KNIGH, BISHOP, KING, and QUEEN)
-    const symetryPiecesPositionConfig: { name: ChessName, cols: CellPosition['col'][] }[] = [
-        { name: 'ROOK', cols: ['A', 'H'] },
-        { name: 'KNIGHT', cols: ['B', 'G'] },
-        { name: 'ROOK', cols: ['C', 'F'] }
+    const symetryPiecesPositionConfig: { name: ChessName, cols: number[] }[] = [
+        { name: 'ROOK', cols: [1, 7] },
+        { name: 'KNIGHT', cols: [2, 6] },
+        { name: 'ROOK', cols: [3, 5] }
     ];
     for (let side of allChessSide) {
-        const row: CellPosition['row'] = side === 'BLACK' ? '8' : '1';
+        const row: number = side === 'BLACK' ? 7 : 0;
         for (let positionConfig of symetryPiecesPositionConfig) {
             for (let col of positionConfig.cols) {
                 allPieces.push({
@@ -65,30 +63,15 @@ export const getChessPieceInitPositions = (): PieceWithPosition[] => {
         }
         allPieces.push({
             piece: { name: 'QUEEN', side },
-            position: { row, col: 'D' }
+            position: { row, col: 3 }
         });
         allPieces.push({
             piece: { name: 'KING', side },
-            position: { row, col: 'E' }
+            position: { row, col: 4 }
         });
     }
 
     return allPieces;
-};
-
-export function findPieceAtPosition(
-    pieces: PieceWithPosition[],
-    rowIndex: number,
-    colIndex: number
-): PieceWithPosition | undefined {
-
-    return pieces.find(piece => {
-        if ((+piece.position.row - 1) !== rowIndex) { return false; }
-
-        const firstCol: CellPosition['col'] = 'A';
-        return (piece.position.col.charCodeAt(0) - firstCol.charCodeAt(0)) === colIndex;
-    });
-
 };
 
 export const getPossibleMoves = (currentPiece: PieceWithPosition, otherPieces: PieceWithPosition[]): PossibleMove[] => {
@@ -99,8 +82,24 @@ export const getPossibleMoves = (currentPiece: PieceWithPosition, otherPieces: P
 const getPossibleMovesOfPawn = (currentPiece: PieceWithPosition, otherPieces: PieceWithPosition[]): PossibleMove[] => {
 
     const isAtInitPosition = currentPiece.piece.side === 'BLACK'
-        ? currentPiece.position.row === '7'
-        : currentPiece.position.row === '2';
+        ? currentPiece.position.row === 6
+        : currentPiece.position.row === 1;
+
+    // get the cell in front of the piece (from its perspective)
+    const getForwardCell = (): CellPosition => {
+        const row = currentPiece.piece.side === 'BLACK'
+            ? currentPiece.position.row - 1
+            : currentPiece.position.row + 1;
+
+        if (row < 0 || 7 < row) {
+            throw new Error('A Pawn cannot go back, and it must promote when it reaches the end of the other side');
+        }
+
+        return {
+            col: currentPiece.position.col,
+            row: row
+        };
+    }
 
     return [];
 };

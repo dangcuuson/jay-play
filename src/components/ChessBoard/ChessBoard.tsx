@@ -1,7 +1,7 @@
 import React = require('react');
 import './ChessBoard.css';
 import { ChessPiece as ChessPieceComponent } from 'components';
-import { PieceWithPosition, CellPosition, getChessPieceInitPositions, findPieceAtPosition } from 'logic';
+import { PieceWithPosition, CellPosition, getChessPieceInitPositions } from 'logic';
 import { range } from 'lodash';
 
 type Props = {
@@ -30,7 +30,7 @@ export class ChessBoard extends React.Component<Props, State> {
     }
 
     onCellSelected(row: number, col: number) {
-        const selectedPiece = findPieceAtPosition(this.state.pieces, row, col);
+        const pieceAtThisCell = this.state.pieces.find(p => p.position.col === col && p.position.row === row);
     }
 
     renderBoard() {
@@ -41,7 +41,7 @@ export class ChessBoard extends React.Component<Props, State> {
 
             return _7To0.map(col => {
                 const cellType = (row + col) % 2;
-                const pieceAtThisCell = findPieceAtPosition(this.state.pieces, row, col);
+                const pieceAtThisCell = this.state.pieces.find(p => p.position.col === col && p.position.row === row);
                 const chessPiece = !!pieceAtThisCell && <ChessPieceComponent {...pieceAtThisCell.piece} />;
                 return (
                     <div
