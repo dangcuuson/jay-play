@@ -1,0 +1,18 @@
+.chessboard .row {
+    display: flex;
+    flex-direction: row;
+}
+
+.chessboard .cell-type-1{
+    background-color: #AAAAAA;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.chessboard .cell-type-2{
+    background-color: #FFFFFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

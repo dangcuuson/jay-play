@@ -1,66 +1,106 @@
 import { range } from 'lodash';
 
+export type ChessName = 'BISHOP' | 'KING' | 'KNIGHT' | 'PAWN' | 'QUEEN' | 'ROOK';
+export const allChessName: ChessName[] = ['BISHOP', 'KING', 'KNIGHT', 'PAWN', 'QUEEN', 'ROOK'];
+
+export type ChessSide = 'BLACK' | 'WHITE';
+export const allChessSide: ChessSide[] = ['BLACK', 'WHITE'];
+
+export type ChessPiece = {
+    name: ChessName;
+    side: ChessSide;
+};
+
 export type CellPosition = {
     row: '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8';
     col: 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H';
 };
 
-export type ChessName = 'BISHOP' | 'KING' | 'KNIGHT' | 'PAWN' | 'QUEEN' | 'ROOK';
-export type ChessSide = 'BLACK' | 'WHITE';
+/**
+ * @member type: move: move to cell; attack: remove enemy's piece; promote: promote to another piece (PAWN only)
+ */
+export type PossibleMove = {
+    type: 'move' | 'attack' | 'promote';
+    pos: CellPosition;
+};
 
-export class ChessPiece {
-    public constructor(public side: ChessSide, public name: ChessName) { }
+export type PieceWithPosition = {
+    piece: ChessPiece;
+    position: CellPosition;
+};
 
-    public getPossibleMoves(): CellPosition[] {
-        // TODO: implement
-        return [];
+export const getChessPieceInitPositions = (): PieceWithPosition[] => {
+    let allPieces: PieceWithPosition[] = [];
+
+    // init PAWNS
+    const allRows: CellPosition['row'][] = ['1', '2', '3', '4', '5', '6', '7', '8'];
+    const allCols: CellPosition['col'][] = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+    for (let col of allCols) {
+        allPieces.push({
+            piece: { name: 'PAWN', side: 'WHITE' },
+            position: { col, row: '2' }
+        });
+
+        allPieces.push({
+            piece: { name: 'PAWN', side: 'BLACK' },
+            position: { col, row: '7' }
+        });
     }
-}
 
-export class ChessBoard {
-    public pieces: ChessPiece[]
-    public cells: {[R in CellPosition['row']]: {[C in CellPosition['col']]: ChessPiece | undefined } }
+    // init the rest (ROOK, KNIGH, BISHOP, KING, and QUEEN)
+    const symetryPiecesPositionConfig: { name: ChessName, cols: CellPosition['col'][] }[] = [
+        { name: 'ROOK', cols: ['A', 'H'] },
+        { name: 'KNIGHT', cols: ['B', 'G'] },
+        { name: 'ROOK', cols: ['C', 'F'] }
+    ];
+    for (let side of allChessSide) {
+        const row: CellPosition['row'] = side === 'BLACK' ? '8' : '1';
+        for (let positionConfig of symetryPiecesPositionConfig) {
+            for (let col of positionConfig.cols) {
+                allPieces.push({
+                    piece: { name: positionConfig.name, side },
+                    position: { row, col }
+                });
+            }
+        }
+        allPieces.push({
+            piece: { name: 'QUEEN', side },
+            position: { row, col: 'D' }
+        });
+        allPieces.push({
+            piece: { name: 'KING', side },
+            position: { row, col: 'E' }
+        });
+    }
 
-    public resetPositions() {
-        const firstRow: CellPosition['row'] = '1';
-        const lastRow: CellPosition['row'] = '8';
-        const rows = range(firstRow.charCodeAt(0), lastRow.charCodeAt(0)).map(c => String.fromCharCode(c)) as CellPosition['row'][];
+    return allPieces;
+};
+
+export function findPieceAtPosition(
+    pieces: PieceWithPosition[],
+    rowIndex: number,
+    colIndex: number
+): PieceWithPosition | undefined {
+
+    return pieces.find(piece => {
+        if ((+piece.position.row - 1) !== rowIndex) { return false; }
 
         const firstCol: CellPosition['col'] = 'A';
-        const lastCol: CellPosition['col'] = 'H';
-        const cols = range(firstCol.charCodeAt(0), lastCol.charCodeAt(0)).map(c => String.fromCharCode(c)) as CellPosition['col'][];
+        return (piece.position.col.charCodeAt(0) - firstCol.charCodeAt(0)) === colIndex;
+    });
 
-        for (let row of rows) {
-            this.cells[row] = { A: undefined, B: undefined, C: undefined, D: undefined, E: undefined, F: undefined, G: undefined, H: undefined }
-        }
+};
 
-        for (let col of cols) {
-            this.cells['2'][col] = new ChessPiece('WHITE', 'PAWN');
-            this.cells['7'][col] = new ChessPiece('BLACK', 'PAWN');
-        }
+export const getPossibleMoves = (currentPiece: PieceWithPosition, otherPieces: PieceWithPosition[]): PossibleMove[] => {
 
-        this.cells['1']['A'] = new ChessPiece('WHITE', 'ROOK');
-        this.cells['1']['H'] = new ChessPiece('WHITE', 'ROOK');
-        this.cells['8']['A'] = new ChessPiece('BLACK', 'ROOK');
-        this.cells['8']['H'] = new ChessPiece('BLACK', 'ROOK');
+    return [];
+};
 
-        this.cells['1']['B'] = new ChessPiece('WHITE', 'KNIGHT');
-        this.cells['1']['G'] = new ChessPiece('WHITE', 'KNIGHT');
-        this.cells['8']['B'] = new ChessPiece('BLACK', 'KNIGHT');
-        this.cells['8']['G'] = new ChessPiece('BLACK', 'KNIGHT');
+const getPossibleMovesOfPawn = (currentPiece: PieceWithPosition, otherPieces: PieceWithPosition[]): PossibleMove[] => {
 
-        this.cells['1']['C'] = new ChessPiece('WHITE', 'BISHOP');
-        this.cells['1']['F'] = new ChessPiece('WHITE', 'BISHOP');
-        this.cells['8']['C'] = new ChessPiece('BLACK', 'BISHOP');
-        this.cells['8']['F'] = new ChessPiece('BLACK', 'BISHOP');
+    const isAtInitPosition = currentPiece.piece.side === 'BLACK'
+        ? currentPiece.position.row === '7'
+        : currentPiece.position.row === '2';
 
-        this.cells['1']['D'] = new ChessPiece('WHITE', 'QUEEN');
-        this.cells['8']['D'] = new ChessPiece('BLACK', 'QUEEN');
-        this.cells['1']['E'] = new ChessPiece('WHITE', 'KING');
-        this.cells['8']['E'] = new ChessPiece('BLACK', 'KING');
-    }
-
-    public constructor() {
-        this.resetPositions();
-    }
-}
+    return [];
+};
