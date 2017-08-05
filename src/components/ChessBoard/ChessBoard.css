@@ -3,16 +3,16 @@
     flex-direction: row;
 }
 
-.chessboard .cell-type-1{
-    background-color: #AAAAAA;
+.chessboard .cell{
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+.chessboard .cell-type-1{
+    background-color: #AAAAAA;
+}
+
 .chessboard .cell-type-2{
     background-color: #FFFFFF;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
